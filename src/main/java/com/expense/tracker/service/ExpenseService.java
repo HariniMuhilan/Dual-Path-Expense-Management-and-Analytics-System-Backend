@@ -21,7 +21,7 @@ public class ExpenseService {
 
     public Expense addExpense(ExpenseDto expenseDto) {
         Category category = categoryRepository.findById(expenseDto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new com.expense.tracker.exception.CategoryNotFoundException("Category not found with id: " + expenseDto.getCategoryId()));
 
         Expense expense = Expense.builder()
                 .amount(expenseDto.getAmount())
@@ -39,10 +39,10 @@ public class ExpenseService {
 
     public Expense updateExpense(Long id, ExpenseDto expenseDto) {
         Expense existingExpense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
+                .orElseThrow(() -> new com.expense.tracker.exception.ExpenseNotFoundException("Expense not found with id: " + id));
 
         Category category = categoryRepository.findById(expenseDto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new com.expense.tracker.exception.CategoryNotFoundException("Category not found with id: " + expenseDto.getCategoryId()));
 
         existingExpense.setAmount(expenseDto.getAmount());
         existingExpense.setExpenseDate(expenseDto.getExpenseDate());
@@ -54,7 +54,7 @@ public class ExpenseService {
 
     public void deleteExpense(Long id) {
         if (!expenseRepository.existsById(id)) {
-            throw new RuntimeException("Expense not found");
+            throw new com.expense.tracker.exception.ExpenseNotFoundException("Expense not found with id: " + id);
         }
         expenseRepository.deleteById(id);
     }

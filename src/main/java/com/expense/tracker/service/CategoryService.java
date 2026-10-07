@@ -42,7 +42,7 @@ public class CategoryService {
             }
             categoryRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Category not found with id: " + id);
+            throw new com.expense.tracker.exception.CategoryNotFoundException("Category not found with id: " + id);
         }
     }
 }
