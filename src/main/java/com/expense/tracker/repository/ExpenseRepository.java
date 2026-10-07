@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     java.util.List<Expense> findByExpenseDateBetween(java.time.LocalDate startDate, java.time.LocalDate endDate);
+    java.util.List<Expense> findByExpenseDateBetweenAndCategory_Type(java.time.LocalDate startDate, java.time.LocalDate endDate, com.expense.tracker.entity.CategoryType type);
 }

@@ -17,14 +17,23 @@ public class AnalyticsController {
     private AnalyticsService analyticsService;
 
     @GetMapping("/weekly")
-    public ResponseEntity<List<CategoryExpenseSummaryDto>> getWeeklyAnalytics() {
-        return ResponseEntity.ok(analyticsService.getWeeklyAnalytics());
+    public ResponseEntity<List<CategoryExpenseSummaryDto>> getWeeklyAnalytics(
+            @RequestParam(required = false) String mode) {
+        return ResponseEntity.ok(analyticsService.getWeeklyAnalytics(mode));
     }
 
     @GetMapping("/monthly")
     public ResponseEntity<List<CategoryExpenseSummaryDto>> getMonthlyAnalytics(
             @RequestParam int year,
-            @RequestParam int month) {
-        return ResponseEntity.ok(analyticsService.getMonthlyAnalytics(year, month));
+            @RequestParam int month,
+            @RequestParam(required = false) String mode) {
+        return ResponseEntity.ok(analyticsService.getMonthlyAnalytics(year, month, mode));
+    }
+
+    @GetMapping("/yearly")
+    public ResponseEntity<List<CategoryExpenseSummaryDto>> getYearlyAnalytics(
+            @RequestParam int year,
+            @RequestParam(required = false) String mode) {
+        return ResponseEntity.ok(analyticsService.getYearlyAnalytics(year, mode));
     }
 }
