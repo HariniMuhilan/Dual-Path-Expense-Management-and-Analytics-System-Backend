@@ -3,6 +3,8 @@ package com.expense.tracker.config;
 import com.expense.tracker.entity.Category;
 import com.expense.tracker.entity.CategoryType;
 import com.expense.tracker.repository.CategoryRepository;
+import com.expense.tracker.repository.ExpenseRepository;
+import com.expense.tracker.service.ExpenseService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,9 @@ import java.util.List;
 public class DataSeeder {
 
     @Bean
-    CommandLineRunner initDatabase(CategoryRepository categoryRepository) {
+    CommandLineRunner initDatabase(CategoryRepository categoryRepository,
+                                  ExpenseRepository expenseRepository,
+                                  ExpenseService expenseService) {
         return args -> {
             List<String> householdCategories = Arrays.asList(
                     "Bills", "Food", "Groceries", "Travel", "Rent", "EMI", "Investment", "Salary for workers", "Miscellaneous"
@@ -51,6 +55,12 @@ public class DataSeeder {
             }
             
             System.out.println("Database seeded with default categories.");
+
+            // Automatically seed realistic 3-year historical expenses if none exist
+            if (expenseRepository.count() == 0) {
+                int count = expenseService.seedDemoExpenses();
+                System.out.println("Database seeded with " + count + " 3-year sample expense transactions.");
+            }
         };
     }
 }
